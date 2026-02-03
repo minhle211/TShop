@@ -48,7 +48,8 @@ function Home() {
         </div>
       </section>
 
-      {/* 2. CATEGORY BAR */}
+
+      {/* 3. CATEGORY BAR */}
       <div className="bg-white border-b py-4">
         <div className="max-w-6xl mx-auto px-6 flex space-x-8 text-sm font-bold text-slate-500 overflow-x-auto whitespace-nowrap">
           <button className="text-[#005461] border-b-2 border-[#3BC1A8] pb-1">All Products</button>
@@ -58,7 +59,7 @@ function Home() {
         </div>
       </div>
 
-      {/* 3. PRODUCT GRID */}
+      {/* 4. PRODUCT GRID */}
       <main className="max-w-6xl mx-auto py-16 px-6">
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-black text-slate-800 tracking-tight">Featured Gear</h2>
