@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { ShoppingCart, Tag, Star, ChevronRight } from 'lucide-react';
 
-function Home() {
+function Home({ searchTerm }) {
   const [products, setProducts] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState("All"); // New state for categories
   const [loading, setLoading] = useState(true);
 
+  const categories = ["All", "T-Shirts", "Hoodies", "Accessories", "Sale"];
+  
   // Colors from your palette
   const darkTeal = "#005461";
   const accentTeal = "#3BC1A8";
@@ -23,10 +26,34 @@ function Home() {
       });
   }, []);
 
+  // Updated Filter: Checks name AND category
+  const filteredProducts = products.filter(p => {
+    const matchesSearch = p.name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCategory = selectedCategory === "All" || p.category === selectedCategory;
+    return matchesSearch && matchesCategory;
+  });
+
   return (
     <div className="min-h-screen bg-[#F8FAFB]">
-      
-      {/* 1. HERO SECTION */}
+      {/* 1. CATEGORY BAR - Now Interactive */}
+      <div className="bg-white border-b py-3 sticky top-[72px] z-40 overflow-x-auto whitespace-nowrap">
+        <div className="max-w-6xl mx-auto px-6 flex space-x-8 text-sm font-bold">
+          {categories.map(cat => (
+            <button 
+              key={cat}
+              onClick={() => setSelectedCategory(cat)}
+              className={`transition-all pb-1 border-b-2 ${
+                selectedCategory === cat 
+                ? "text-[#005461] border-[#3BC1A8]" 
+                : "text-slate-400 border-transparent hover:text-slate-600"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+      </div>
+      {/* 2. HERO SECTION */}
       <section className="relative text-white py-20 px-10" style={{ backgroundColor: darkTeal }}>
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between">
           <div className="md:w-1/2 space-y-6">
@@ -49,17 +76,7 @@ function Home() {
       </section>
 
 
-      {/* 3. CATEGORY BAR */}
-      <div className="bg-white border-b py-4">
-        <div className="max-w-6xl mx-auto px-6 flex space-x-8 text-sm font-bold text-slate-500 overflow-x-auto whitespace-nowrap">
-          <button className="text-[#005461] border-b-2 border-[#3BC1A8] pb-1">All Products</button>
-          <button className="hover:text-[#005461]">Apparel</button>
-          <button className="hover:text-[#005461]">Accessories</button>
-          <button className="hover:text-[#005461]">Tech</button>
-        </div>
-      </div>
-
-      {/* 4. PRODUCT GRID */}
+      {/* 3. PRODUCT GRID */}
       <main className="max-w-6xl mx-auto py-16 px-6">
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-black text-slate-800 tracking-tight">Featured Gear</h2>
